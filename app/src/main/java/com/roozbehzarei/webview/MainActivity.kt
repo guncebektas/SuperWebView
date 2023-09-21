@@ -42,10 +42,16 @@ class MainActivity : AppCompatActivity() {
         webView.webViewClient = MyWebViewClient()
         webView.webChromeClient = MyWebChromeClient()
         with(webView.settings) {
+            allowFileAccess = true
+            allowContentAccess = true
+            allowFileAccessFromFileURLs = true
+            allowUniversalAccessFromFileURLs = true
             // Tell the WebView to enable JavaScript execution
             javaScriptEnabled = true
             // Enable DOM storage API
-            domStorageEnabled = false
+            domStorageEnabled = true
+            loadsImagesAutomatically = true
+
             // Disable support for zooming using webView's on-screen zoom controls and gestures
             setSupportZoom(false)
         }
@@ -71,8 +77,10 @@ class MainActivity : AppCompatActivity() {
             if (webView.url == null) {
                 webView.loadUrl(WEBSITE)
             } else {
-                webView.reload()
+                // webView.reload()
             }
+
+            binding.root.isEnabled = false
         }
 
         /**
@@ -96,7 +104,7 @@ class MainActivity : AppCompatActivity() {
          * Disable Swipe-to-refresh if [webView] is scrolling
          */
         webView.viewTreeObserver.addOnScrollChangedListener {
-            binding.root.isEnabled = webView.scrollY == 0
+            binding.root.isEnabled = false; //= webView.scrollY == 0
         }
 
         /**
